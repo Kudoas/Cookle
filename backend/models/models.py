@@ -4,7 +4,6 @@ from datetime import datetime
 from sqlalchemy import func
 
 
-# kajiura
 class User(Base):
     __tablename__ = 'users'
     user_id = Column(Integer, primary_key=True)
@@ -25,7 +24,6 @@ class User(Base):
         return "User<{}, {}, {}, {}, {}, {}>".format(self.user_id, self.email, self.name, self.password, self.total_badges, self.total_points)
 
 
-# masui
 class Meal_content(Base):
     __tablename__ = 'meal_content'
     meal_id = Column(Integer, primary_key=True)
@@ -40,7 +38,6 @@ class Meal_content(Base):
         return 'Meal_content<{}, {}, {}>'.format(self.meal_id, self.name, self.point)
 
 
-# kajiura
 class Cook_history(Base):
     __tablename__ = 'cook_histories'
     cook_history_id = Column(Integer, primary_key=True)
@@ -57,7 +54,6 @@ class Cook_history(Base):
         return "Cook_history<{}, {}, {}, {}>".format(self.cook_history_id, self.meal_id, self.user_id, self.post_id)
 
 
-# kajiura
 class Point_user(Base):
     __tablename__ = 'point_users'
     point_user_id = Column(Integer, primary_key=True)
@@ -74,7 +70,6 @@ class Point_user(Base):
         return "Point_user<{}, {}, {}, {}>".format(self.point_user_id, self.user_id, self.point, self.get_date)
 
 
-# kajiura
 class Post(Base):
     __tablename__ = 'posts'
     post_id = Column(Integer, primary_key=True)
@@ -105,7 +100,6 @@ class Post(Base):
         return "Post<{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}>".format(self.post_id, self.user_id, self.meal_id1, self.meal_id2, self.meal_id3, self.meal_id4, self.meal_id5, self.image_url, self.recipe_url, self.post_comment, self.create_at)
 
 
-# kajiura
 class User_relation(Base):
     __tablename__ = 'user_relations'
     user_relation_id = Column(Integer, primary_key=True)
@@ -118,8 +112,6 @@ class User_relation(Base):
 
     def __repr__(self):
         return "User_relation<{}, {}, {}>".format(self.user_relation_id, self.follower_id, self.followed_id)
-
-# kajiura
 
 
 class Badges(Base):
