@@ -324,7 +324,6 @@ def graph_status_json():
 @jwt_required
 def upload():
     try:
-        # kimura
         # 投稿のpostリクエストが来たらS3に画像を保存し、
         # データベースへの追記、更新を行う。
         user_id = get_user_id()
@@ -398,8 +397,8 @@ def upload():
         # point_userにuser_id,point,get_date追記
         add_data(Point_user(user_id, total_points, get_date))
 
-        # masui
         # push users' graph
+
         def push_graph():
             point_list = Point_user.query.filter(
                 Point_user.user_id == user_id).all()
@@ -498,8 +497,8 @@ def upload():
         print("バッチ処理開始")
         # return jsonify(status=0, message=''), 200
 
-        # niimi
         # データベース内容変更　judge_budges関数内で使用
+
         def change_badges(user, meal, level):
             # Userテーブルのtotal_badgesを変更
             user_table = User.query.filter(User.user_id == user).first()
@@ -577,7 +576,6 @@ def return_meal_name():
         Meal_content.meal_id == bonus_id).all()[0].name
     return jsonify(results=meal_name_list, bonus=bonus_name)
 
-# niimi
 # 役割：料理検索
 # 引数：meal_id
 # 返り値：meal_name, user_id,image_url,post_id
@@ -1003,5 +1001,5 @@ def error_handler(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)
     # app.run(debug=True, host="localhost", port=5001)

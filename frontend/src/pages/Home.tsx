@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-import Panda from "../css/image/panda.png";
+// import Panda from "../css/image/panda.png";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
       <div className="back_home">
         <h2 className="animate__animated animate__fadeIn">Cookle</h2>
         <p id="home_back_p" className="animate__animated animate__fadeIn">
-          あなたの自炊をサポートします
+          あなたの自炊をサポートしません
         </p>
         <div className="home1">
           <h4>
@@ -36,9 +36,9 @@ const Home: React.FC = () => {
             <i className="far fa-lightbulb"></i>
             <span>その悩み、Cookleで解決しよう！</span>
           </h4>
-          <p>
+          {/* <p>
             <img src={Panda} alt="image" />
-          </p>
+          </p> */}
           <Link style={{ color: "white" }} onClick={() => history.push("/login")} className="btn">
             <span>サービスを使ってみる</span>
           </Link>

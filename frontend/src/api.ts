@@ -1,4 +1,4 @@
-const baseUrl = `http://34.122.26.70:5000`;
+const baseUrl = `http://localhost:5000`;
 
 const toJson = async (res: Response) => {
   if (res.status === 404) {

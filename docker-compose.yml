@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  db:
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: cookle-db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    # 開発環境でのdatabaseの永続化
+    # volumes:
+    #   - ./mysql/mysql_data:/var/lib/mysql
+
+  migration:
+    image: flyway/flyway
+    depends_on:
+      - db
+    container_name: cookle-migration
+    volumes:
+      - ./database/migration/schema:/flyway/sql
+
+  api:
+    container_name: cookle-api
+    restart: always
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./api:/usr/src/app
+    depends_on:
+      - db
+
+  frontend:
+    container_name: cookle-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - "./frontend:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    ports:
+      - 1234:1234
+      - 1235:1235
+    depends_on:
+      - api
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
