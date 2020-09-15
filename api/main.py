@@ -7,7 +7,7 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 import boto3  # AWS SDK for Python
-from models.models import User, Meal_content, Cook_history, Point_user, Post, User_relation, Badges
+from models.models import User, MealContent, CookHistory, PointUser, Post, UserRelation, Badge
 from models.database import db_session
 import datetime
 from urllib.request import urlopen
@@ -24,7 +24,7 @@ app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
 jwt = JWTManager(app)
 
-# dataはmodels.modelsの形式に合うように指定 ex) add_data() Meal_content("オムライス", 50)とか add_data(User("a.com", "A", "hoge", 3, 150)) とか add_data(Cook_history(100, 200)) とか！！
+# dataはmodels.modelsの形式に合うように指定 ex) add_data() MealContent("オムライス", 50)とか add_data(User("a.com", "A", "hoge", 3, 150)) とか add_data(CookHistory(100, 200)) とか！！
 
 
 def add_data(data):
@@ -104,13 +104,13 @@ def follow_user(user_id=None):
             return jsonify({"msg": "Invalid user_id"}), 404
 
         # すでにフォローしている場合
-        own_follow_list = User_relation.query.filter(
-            User_relation.follower_id == own_user_id).all()
+        own_follow_list = UserRelation.query.filter(
+            UserRelation.follower_id == own_user_id).all()
         for o in own_follow_list:
             if o.followed_id == user_id:
                 return jsonify({"msg": "Already followed user"}), 500
 
-        add_data(User_relation(own_user_id, user_id))
+        add_data(UserRelation(own_user_id, user_id))
 
         return jsonify({"msg": "follows"}), 200
     except Exception as e:
@@ -130,12 +130,12 @@ def unfollow_user(user_id=None):
             return jsonify({"msg": "Invalid user_id"}), 404
 
         # フォローしてない場合
-        own_follow_list = User_relation.query.filter(
-            User_relation.follower_id == own_user_id).all()
+        own_follow_list = UserRelation.query.filter(
+            UserRelation.follower_id == own_user_id).all()
         for o in own_follow_list:
             if o.followed_id == user_id:
-                User_relation.query.filter(
-                    User_relation.follower_id == own_user_id, User_relation.followed_id == user_id).delete()
+                UserRelation.query.filter(
+                    UserRelation.follower_id == own_user_id, UserRelation.followed_id == user_id).delete()
                 db_session.commit()
                 return jsonify({"msg": "unfollows"}), 200
 
@@ -159,8 +159,8 @@ def user_timeline():
             posts.append({'post_id': o.post_id, 'user_id': user_id, 'name': name,
                           'meal_url': o.recipe_url, 'image_url': o.image_url, 'create_at': o.create_at})
         # Get followee's posts
-        flwee_raw = User_relation.query.filter(
-            User_relation.follower_id == user_id).all()
+        flwee_raw = UserRelation.query.filter(
+            UserRelation.follower_id == user_id).all()
         for f in flwee_raw:
             f_posts = Post.query.filter(Post.user_id == f.followed_id).all()
             f_name = User.query.filter(
@@ -192,14 +192,14 @@ def mypage_json():
                 {'post_id': p.post_id, 'meal_url': p.recipe_url, 'image_url': p.image_url})
         posts.sort(key=lambda x: x['post_id'], reverse=True)
         flwer = []
-        flwer_raw = User_relation.query.filter(
-            User_relation.followed_id == user_id).all()
+        flwer_raw = UserRelation.query.filter(
+            UserRelation.followed_id == user_id).all()
         for f in flwer_raw:
             flwer.append(f.follower_id)
         n_flwer = len(flwer)
         flwee = []
-        flwee_raw = User_relation.query.filter(
-            User_relation.follower_id == user_id).all()
+        flwee_raw = UserRelation.query.filter(
+            UserRelation.follower_id == user_id).all()
         for f in flwee_raw:
             flwee.append(f.followed_id)
         n_flwee = len(flwee)
@@ -230,14 +230,14 @@ def others_mypage_json(user_id=None):
             posts.append(
                 {'post_id': p.post_id, 'meal_url': p.recipe_url, 'image_url': p.image_url})
         flwer = []
-        flwer_raw = User_relation.query.filter(
-            User_relation.followed_id == user_id).all()
+        flwer_raw = UserRelation.query.filter(
+            UserRelation.followed_id == user_id).all()
         for f in flwer_raw:
             flwer.append(f.follower_id)
         n_flwer = len(flwer)
         flwee = []
-        flwee_raw = User_relation.query.filter(
-            User_relation.follower_id == user_id).all()
+        flwee_raw = UserRelation.query.filter(
+            UserRelation.follower_id == user_id).all()
         for f in flwee_raw:
             flwee.append(f.followed_id)
         n_flwee = len(flwee)
@@ -259,8 +259,8 @@ def relation_json():
         #user_id = 1
 
         flwer = []
-        flwer_raw = User_relation.query.filter(
-            User_relation.followed_id == user_id).all()
+        flwer_raw = UserRelation.query.filter(
+            UserRelation.followed_id == user_id).all()
         for f in flwer_raw:
             # flwer.append(f.follower_id)
             user_name = User.query.filter(
@@ -268,8 +268,8 @@ def relation_json():
             flwer.append({'user_id': f.follower_id, 'name': user_name})
             print(flwer)
         flwee = []
-        flwee_raw = User_relation.query.filter(
-            User_relation.follower_id == user_id).all()
+        flwee_raw = UserRelation.query.filter(
+            UserRelation.follower_id == user_id).all()
         for f in flwee_raw:
             user_name = User.query.filter(
                 User.user_id == f.followed_id).first().name
@@ -288,8 +288,8 @@ def other_relation_json(user_id=None):
         #user_id = 1
 
         flwer = []
-        flwer_raw = User_relation.query.filter(
-            User_relation.followed_id == user_id).all()
+        flwer_raw = UserRelation.query.filter(
+            UserRelation.followed_id == user_id).all()
         for f in flwer_raw:
             # flwer.append(f.follower_id)
             user_name = User.query.filter(
@@ -297,8 +297,8 @@ def other_relation_json(user_id=None):
             flwer.append({'user_id': f.follower_id, 'name': user_name})
             print(flwer)
         flwee = []
-        flwee_raw = User_relation.query.filter(
-            User_relation.follower_id == user_id).all()
+        flwee_raw = UserRelation.query.filter(
+            UserRelation.follower_id == user_id).all()
         for f in flwee_raw:
             user_name = User.query.filter(
                 User.user_id == f.followed_id).first().name
@@ -361,47 +361,47 @@ def upload():
         created_at = dt_now.strftime('%Y-%m-%d %H:%M:%S')
         date = int(dt_now.strftime('%d'))
         bonus_id = date % 15+1
-        bonus_name = Meal_content.query.filter(
-            Meal_content.meal_id == bonus_id).all()[0].name
+        bonus_name = MealContent.query.filter(
+            MealContent.meal_id == bonus_id).all()[0].name
         # meal_nameの情報を元にデータベースからmeal_idとmeal_pointを取ってくる
         meal_id, meal_point = [], []
         print(meal_name)
         for meal in meal_name:
             if meal == bonus_name:
-                meal_point.append(Meal_content.query.filter(
-                    Meal_content.name == meal).all()[0].point*2)
+                meal_point.append(MealContent.query.filter(
+                    MealContent.name == meal).all()[0].point*2)
             else:
-                meal_point.append(Meal_content.query.filter(
-                    Meal_content.name == meal).all()[0].point)
-            meal_id.append(Meal_content.query.filter(
-                Meal_content.name == meal).all()[0].meal_id)
+                meal_point.append(MealContent.query.filter(
+                    MealContent.name == meal).all()[0].point)
+            meal_id.append(MealContent.query.filter(
+                MealContent.name == meal).all()[0].meal_id)
         meal_num = len(meal_id)
         for i in range(5-meal_num):
             meal_id.append(None)
-        # Point_userに送る為にpointの合計を計算する
+        # PointUserに送る為にpointの合計を計算する
         total_points = sum(meal_point)
         # postにuser_id,meal_id{1,2,3,4,5},image_url,post_comment,recipe_url追記
         print(meal_id)
         add_data(Post(user_id, meal_id[0], meal_id[1], meal_id[2], meal_id[3],
                       meal_id[4], image_url, recipe_url, post_comment, created_at))
         # postidを取ってくる
-        post_id = Meal_content.query.all()[-1].meal_id
-        # cook_historyにmeal_id,user_id,post_id追記
+        post_id = MealContent.query.all()[-1].meal_id
+        # CookHistoryにmeal_id,user_id,post_id追記
         for i in range(meal_num):
-            add_data(Cook_history(meal_id[i], user_id, post_id))
+            add_data(CookHistory(meal_id[i], user_id, post_id))
         # userテーブルから現在のポイントを取ってくる+ポイントの上書き
         user = User.query.filter(User.user_id == user_id).first()
         user.total_points += total_points
         db_session.commit()
 
-        # point_userにuser_id,point,get_date追記
-        add_data(Point_user(user_id, total_points, get_date))
+        # PointUserにuser_id,point,get_date追記
+        add_data(PointUser(user_id, total_points, get_date))
 
         # push users' graph
 
         def push_graph():
-            point_list = Point_user.query.filter(
-                Point_user.user_id == user_id).all()
+            point_list = PointUser.query.filter(
+                PointUser.user_id == user_id).all()
             graph_dic = {}
             # 同じ日に獲得したポイントは加算
             for p in point_list:
@@ -504,10 +504,10 @@ def upload():
             user_table = User.query.filter(User.user_id == user).first()
             user_table.total_badges += 1
             # Badgesテーブルにカラム追加
-            badges_table = Badges.query.filter(
-                Badges.user_id == user, Badges.meal_id == meal).all()
+            badges_table = Badge.query.filter(
+                Badge.user_id == user, Badge.meal_id == meal).all()
             if len(badges_table) == 0:
-                add_data(Badges(user, meal, level))
+                add_data(Badge(user, meal, level))
             else:
                 print("level", level)
                 badges_table[0].level = level
@@ -516,12 +516,12 @@ def upload():
 
         def judge_budges(meal_id):
             # 料理nameを取得　meal_name
-            meal_name = Meal_content.query.filter(
-                Meal_content.meal_id == meal_id).all()[0].name
+            meal_name = MealContent.query.filter(
+                MealContent.meal_id == meal_id).all()[0].name
             # 料理を過去何回作ったかを取ってくる　meal_count
-            user_cook = Cook_history.query.filter(
-                Cook_history.user_id == user_id,
-                Cook_history.meal_id == meal_id
+            user_cook = CookHistory.query.filter(
+                CookHistory.user_id == user_id,
+                CookHistory.meal_id == meal_id
             ).all()
             meal_count = len(user_cook)
             # 閾値を超えたか判定し、badge_levelを取得　badge_level
@@ -564,16 +564,16 @@ def return_meal_name():
     # meal_nameを取ってくる
     # jsonにして送り返す
     meal_name_list = []
-    for i in range(len(Meal_content.query.all())):
+    for i in range(len(MealContent.query.all())):
         name_json = {
-            'meal_name': Meal_content.query.all()[i].name
+            'meal_name': MealContent.query.all()[i].name
         }
         meal_name_list.append(name_json)
     dt_now = datetime.datetime.now()
     date = int(dt_now.strftime('%d'))
     bonus_id = date % 15+1
-    bonus_name = Meal_content.query.filter(
-        Meal_content.meal_id == bonus_id).all()[0].name
+    bonus_name = MealContent.query.filter(
+        MealContent.meal_id == bonus_id).all()[0].name
     return jsonify(results=meal_name_list, bonus=bonus_name)
 
 # 役割：料理検索
@@ -590,12 +590,12 @@ def search_meal():
         payload = request.json
         meal_name = payload.get('meal_name')
         meal_name = str(meal_name).split("'")[-2]
-        meal_id = Meal_content.query.filter(
-            Meal_content.name == meal_name).all()[0].meal_id
-        total_post = Cook_history.query.filter(
-            Cook_history.meal_id == meal_id).all()
+        meal_id = MealContent.query.filter(
+            MealContent.name == meal_name).all()[0].meal_id
+        total_post = CookHistory.query.filter(
+            CookHistory.meal_id == meal_id).all()
         post_id = []
-        # meal_idが一致するものをCook_historyテーブルから取り出して、付随するpost_idを取得する
+        # meal_idが一致するものをCookHistoryテーブルから取り出して、付随するpost_idを取得する
         for p in total_post:
             post_id.append(p.post_id)
         post_list = []
@@ -640,11 +640,11 @@ def badge_status_json():
         # user_idを指定してmeal_idとmeal_nameとlevelを返す
         # user_id = 1 # とりあえず固定
         user_id = get_user_id()
-        badges_raw = Badges.query.filter(Badges.user_id == user_id).all()
+        badges_raw = Badge.query.filter(Badge.user_id == user_id).all()
         badge_list = []
         for data in badges_raw:
-            meal_name = Meal_content.query.filter(
-                Meal_content.meal_id == data.meal_id).all()[0].name
+            meal_name = MealContent.query.filter(
+                MealContent.meal_id == data.meal_id).all()[0].name
             badge_dic = {
                 'meal_id': data.meal_id,
                 'meal_name': meal_name,
@@ -663,11 +663,11 @@ def other_badge_status_json(user_id=None):
         # user_idを指定してmeal_idとmeal_nameとlevelを返す
         # user_id = 1 # とりあえず固定
         user_id = int(user_id)
-        badges_raw = Badges.query.filter(Badges.user_id == user_id).all()
+        badges_raw = Badge.query.filter(Badge.user_id == user_id).all()
         badge_list = []
         for data in badges_raw:
-            meal_name = Meal_content.query.filter(
-                Meal_content.meal_id == data.meal_id).all()[0].name
+            meal_name = MealContent.query.filter(
+                MealContent.meal_id == data.meal_id).all()[0].name
             badge_dic = {
                 'meal_id': data.meal_id,
                 'meal_name': meal_name,
@@ -743,8 +743,8 @@ def followee_total_badge_ranking_json():
         # user_id = 2 # とりあえず2
         user_id = get_user_id()
         flwee = [user_id]
-        flwee_raw = User_relation.query.filter(
-            User_relation.follower_id == user_id).all()
+        flwee_raw = UserRelation.query.filter(
+            UserRelation.follower_id == user_id).all()
         for f in flwee_raw:
             flwee.append(f.followed_id)
         # この時点でflwee = [2,1]
@@ -781,8 +781,8 @@ def followee_total_point_ranking_json():
         # user_id = 2 # とりあえず2
         user_id = get_user_id()
         flwee = [user_id]
-        flwee_raw = User_relation.query.filter(
-            User_relation.follower_id == user_id).all()
+        flwee_raw = UserRelation.query.filter(
+            UserRelation.follower_id == user_id).all()
         for f in flwee_raw:
             flwee.append(f.followed_id)
         # この時点でflwee = [2,1]
@@ -822,8 +822,8 @@ def monthly_point_ranking_json():
         user_list = []
         for user in users:
             user_id, name, total_badges = user
-            user_point_history = Point_user.query.filter(
-                Point_user.user_id == user_id).all()
+            user_point_history = PointUser.query.filter(
+                PointUser.user_id == user_id).all()
             points = 0
             for data in user_point_history:
                 if(int(data.get_date[5:7]) == datetime.datetime.now().month):
@@ -859,8 +859,8 @@ def followee_monthly_point_ranking_json():
         # user_id = 2 # とりあえず2
         user_id = get_user_id()
         flwee = [user_id]
-        flwee_raw = User_relation.query.filter(
-            User_relation.follower_id == user_id).all()
+        flwee_raw = UserRelation.query.filter(
+            UserRelation.follower_id == user_id).all()
         for f in flwee_raw:
             flwee.append(f.followed_id)
         # この時点でflwee = [2,1]
@@ -872,8 +872,8 @@ def followee_monthly_point_ranking_json():
         user_list = []
         for user in flwee_users:
             user_id, name, total_badges = user
-            user_point_history = Point_user.query.filter(
-                Point_user.user_id == user_id).all()
+            user_point_history = PointUser.query.filter(
+                PointUser.user_id == user_id).all()
             points = 0
             for data in user_point_history:
                 if(int(data.get_date[5:7]) == datetime.datetime.now().month):
@@ -904,11 +904,11 @@ def followee_monthly_point_ranking_json():
 # curl http://localhost:5000/meal-ranking
 def meal_ranking_json():
     try:
-        # Cook_historyから人気料理ランキングを取得
+        # CookHistoryから人気料理ランキングを取得
         # 各meal_idをcountして個数の降順でソート
         # meal_idからmeal_nameを取得
         import collections
-        hists = db_session.query(Cook_history.meal_id).all()
+        hists = db_session.query(CookHistory.meal_id).all()
         hists = list(collections.Counter(hists).items())
         hists.sort(key=lambda x: x[1], reverse=True)
         count_list = []
@@ -917,8 +917,8 @@ def meal_ranking_json():
             meal_id = meal_id[0]
             if meal_id is None:
                 continue
-            meal_name = Meal_content.query.filter(
-                Meal_content.meal_id == meal_id).all()[0].name
+            meal_name = MealContent.query.filter(
+                MealContent.meal_id == meal_id).all()[0].name
             count_dic = {
                 'meal_id': meal_id,
                 'meal_name': meal_name,
@@ -936,12 +936,12 @@ def meal_ranking_json():
 @jwt_required
 def weekly_meal_ranking_json():
     try:
-        # Cook_historyから人気料理ランキングを取得
+        # CookHistoryから人気料理ランキングを取得
         # 各meal_idをcountして個数の降順でソート
         # meal_idからmeal_nameを取得
         import collections
-        hists = db_session.query(Cook_history.meal_id,
-                                 Cook_history.post_id).all()
+        hists = db_session.query(CookHistory.meal_id,
+                                 CookHistory.post_id).all()
         meal_list = []
         for hist in hists:
             meal_id, post_id = hist
@@ -959,8 +959,8 @@ def weekly_meal_ranking_json():
         count_list = []
         for hist in hists:
             meal_id, count = hist
-            meal_name = Meal_content.query.filter(
-                Meal_content.meal_id == meal_id).all()[0].name
+            meal_name = MealContent.query.filter(
+                MealContent.meal_id == meal_id).all()[0].name
             count_dic = {
                 'meal_id': meal_id,
                 'meal_name': meal_name,
