@@ -1,12 +1,14 @@
-db.sqlite3
-
+# frontend
 */node_modules
 dist
 .cache
 .idea
 
-api/venv
-api/__pycache__
+# api
+venv
+__pycache__
+db.sqlite3
+point_graph.html
 
 .aws
 .env
