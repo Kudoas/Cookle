@@ -1,14 +1,24 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 import os
 
-database_file = os.path.join(os.path.abspath(
-    os.path.dirname(__file__)), 'db.sqlite3')
+import pymysql
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import scoped_session, sessionmaker
+
+from models import models
+
+
+class Config(object):
+    DEBUG = True
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:password@db:3306/cookle_db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
 engine = create_engine(
-    'sqlite:///' + database_file,
-    convert_unicode=True,
-    connect_args={"check_same_thread": False}
+    Config.SQLALCHEMY_DATABASE_URI,
+    encoding="utf-8",
+    echo=True
 )
 db_session = scoped_session(
     sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -18,7 +28,6 @@ Base.query = db_session.query_property()
 
 
 def init_db():
-    from models import models
     Base.metadata.create_all(bind=engine)
 
     # 初期データ登録

@@ -1,3 +1,6 @@
+import datetime
+
+import boto3
 from flask import Blueprint, request, abort, jsonify
 from flask_cors import CORS, cross_origin
 from flask_jwt_extended import (
@@ -6,14 +9,12 @@ from flask_jwt_extended import (
     create_access_token,
     get_jwt_identity
 )
-import boto3
-import datetime
-from urllib.request import urlopen
-import plotly.graph_objects as go
 import numpy as np
+import plotly.graph_objects as go
+from urllib.request import urlopen
 
-from models.models import User, MealContent, CookHistory, PointUser, Post, UserRelation, Badge
 from models.database import db_session
+from models.models import User, MealContent, CookHistory, PointUser, Post, UserRelation, Badge
 
 api = Blueprint('api', __name__)
 

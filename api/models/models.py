@@ -1,7 +1,11 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime
-from models.database import Base
 from datetime import datetime
+
+from sqlalchemy import Column, Integer, String, Text, DateTime
 from sqlalchemy import func
+
+from .settings import retrun_base
+
+Base = retrun_base()
 
 
 class User(Base):

@@ -1,20 +1,16 @@
-from flask import Flask, request, abort, jsonify
-from flask_cors import CORS, cross_origin
-from flask_jwt_extended import (
-    JWTManager,
-    jwt_required,
-    create_access_token,
-    get_jwt_identity
-)
+from flask import Flask
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 from controller.controller import api
+
 
 app = Flask(__name__)
 CORS(app)
 
 app.config['JSON_AS_ASCII'] = False
 # Flask-JWT-extendedのセットアップ
-app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
+app.config['JWT_SECRET_KEY'] = 'super-secret'
 # 認証トークンの期限の有無
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = False
 JWTManager(app)
