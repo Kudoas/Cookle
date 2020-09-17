@@ -30,8 +30,8 @@
   "scripts": {
     "start": "parcel index.html --hmr-port 1235 --hmr-hostname 0.0.0.0",
     "build": "parcel build index.html",
-    "lint": "eslint --ext .ts,.tsx 'src/**/**'",
-    "lint:fix": "eslint --fix --ext .ts,.tsx 'src/**/**'"
+    "lint": "eslint 'src/**/{*.ts,*.tsx}'",
+    "lint:fix": "eslint --fix 'src/**/{*.ts,*.tsx}'"
   },
   "eslintConfig": {
     "extends": "react-app"
