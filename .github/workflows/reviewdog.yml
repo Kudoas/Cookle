@@ -24,4 +24,4 @@ jobs:
           eslint_flags: "src/**/{*.ts,*.tsx}"
 
       - name: eslint
-        run: yarn lint
+        run: cd ./frontend/; yarn lint
