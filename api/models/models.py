@@ -1,7 +1,11 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime
-from models.database import Base
 from datetime import datetime
+
+from sqlalchemy import Column, Integer, String, Text, DateTime
 from sqlalchemy import func
+
+from .settings import retrun_base
+
+Base = retrun_base()
 
 
 class User(Base):
@@ -24,7 +28,7 @@ class User(Base):
         return "User<{}, {}, {}, {}, {}, {}>".format(self.user_id, self.email, self.name, self.password, self.total_badges, self.total_points)
 
 
-class Meal_content(Base):
+class MealContent(Base):
     __tablename__ = 'meal_content'
     meal_id = Column(Integer, primary_key=True)
     name = Column(String(128), unique=True)
@@ -38,7 +42,7 @@ class Meal_content(Base):
         return 'Meal_content<{}, {}, {}>'.format(self.meal_id, self.name, self.point)
 
 
-class Cook_history(Base):
+class CookHistory(Base):
     __tablename__ = 'cook_histories'
     cook_history_id = Column(Integer, primary_key=True)
     meal_id = Column(Integer)
@@ -54,7 +58,7 @@ class Cook_history(Base):
         return "Cook_history<{}, {}, {}, {}>".format(self.cook_history_id, self.meal_id, self.user_id, self.post_id)
 
 
-class Point_user(Base):
+class PointUser(Base):
     __tablename__ = 'point_users'
     point_user_id = Column(Integer, primary_key=True)
     user_id = Column(Integer)
@@ -100,7 +104,7 @@ class Post(Base):
         return "Post<{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}>".format(self.post_id, self.user_id, self.meal_id1, self.meal_id2, self.meal_id3, self.meal_id4, self.meal_id5, self.image_url, self.recipe_url, self.post_comment, self.create_at)
 
 
-class User_relation(Base):
+class UserRelation(Base):
     __tablename__ = 'user_relations'
     user_relation_id = Column(Integer, primary_key=True)
     follower_id = Column(Integer)
@@ -114,7 +118,7 @@ class User_relation(Base):
         return "User_relation<{}, {}, {}>".format(self.user_relation_id, self.follower_id, self.followed_id)
 
 
-class Badges(Base):
+class Badge(Base):
     __tablename__ = 'badges'
     badges_id = Column(Integer, primary_key=True)
     user_id = Column(Integer)
@@ -127,7 +131,7 @@ class Badges(Base):
         self.level = level
 
     def __repr__(self):
-        return "Badges<{}, {}, {}>".format(self.user_id, self.meal_id, self.level)
+        return "Badge<{}, {}, {}>".format(self.user_id, self.meal_id, self.level)
 
 # sqliteから以下でテーブル作成
 # create table User(user_id integer primary key autoincrement, name string);

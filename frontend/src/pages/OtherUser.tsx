@@ -50,7 +50,6 @@ const useStyles = makeStyles({
 
 const OtherUser: React.FC = () => {
   const [userInfo, setUserInfo] = useState<State>();
-  const [myRelation, setMyRelation] = useState<Relation>();
   const [errorMessage, setErrorMessage] = useState(null);
   const [flag, setFlag] = useState(false);
   const [token, setToken] = useState("");
@@ -82,7 +81,6 @@ const OtherUser: React.FC = () => {
       };
       await getMyRelation(jwtToken)
         .then((res) => {
-          setMyRelation(res);
           tempRelation = res;
         })
         .catch((err) => {

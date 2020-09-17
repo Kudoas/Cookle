@@ -6,7 +6,7 @@ interface Props {
   onClick: any;
 }
 
-const LogoutButton: React.FC<Props> = (props) => {
+const LogoutButton: React.FC<Props> = (props: Props) => {
   const { onClick } = props;
 
   return <Button onClick={onClick}>Logout</Button>;

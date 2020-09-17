@@ -70,7 +70,6 @@ const Post: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [badges, setBadges] = useState<BadgeType[]>();
   const [mealName, setMealName] = useState<MealType[]>();
-  const [bonus, setBonus] = useState("");
   useLoginRedirect();
   const history = useHistory();
   const classes = useStyles();
@@ -80,7 +79,6 @@ const Post: React.FC = () => {
       await getMealName()
         .then((res) => {
           setMealName(res.results);
-          setBonus(res.bonus);
         })
         .catch((err) => {
           setErrorMessage(err.message);
@@ -132,11 +130,6 @@ const Post: React.FC = () => {
     setChecked(newChecked);
   };
 
-  const testProps = [
-    { meal_name: "test", badge_level: 2 },
-    { meal_name: "test", badge_level: 2 },
-  ];
-
   return (
     <Container component="main" maxWidth="xs">
       <div style={{ textAlign: "center" }}>
@@ -147,7 +140,6 @@ const Post: React.FC = () => {
           </h3>
         </div>
         <div className="post_form">
-          "
           <form onSubmit={onSubmit}>
             <div className="post_content">
               <FormControl required>
@@ -230,7 +222,7 @@ const Post: React.FC = () => {
           style={{
             top: "50%",
             left: "50%",
-            transform: `translate(-50%, -50%)`,
+            transform: "translate(-50%, -50%)",
             display: "flex",
             alignItems: "flex-end",
           }}
@@ -238,7 +230,7 @@ const Post: React.FC = () => {
           disableScrollLock
         >
           <div>
-            <div style={{ width: "100%", left: "50%", transform: `translate(50%, 0%)` }}>
+            <div style={{ width: "100%", left: "50%", transform: "translate(50%, 0%)" }}>
               <EarnBadge earnedBadges={badges} />
             </div>
           </div>

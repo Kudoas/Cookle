@@ -1,7 +1,6 @@
 import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -32,7 +31,7 @@ const useStyles = makeStyles({
   },
 });
 
-const PhotoDisplay: React.FC<Props> = (props) => {
+const PhotoDisplay: React.FC<Props> = (props: Props) => {
   const classes = useStyles();
 
   const photos = props.post_id.map((item) => {

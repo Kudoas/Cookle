@@ -4,7 +4,7 @@ interface Props {
   message: string | null;
 }
 
-const ErrorMessage: React.FC<Props> = (props) => {
+const ErrorMessage: React.FC<Props> = (props: Props) => {
   const { message } = props;
   if (message === null || message === "") {
     return null;

@@ -12,7 +12,7 @@ interface Props {
   total_point: number;
 }
 
-const BadgeRanker: React.FC<Props> = (props) => {
+const BadgeRanker: React.FC<Props> = (props: Props) => {
   const { user_id, name, total_badge, total_point } = props;
   const history = useHistory();
 

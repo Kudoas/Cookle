@@ -24,7 +24,7 @@ interface Props {
   userId?: string;
 }
 
-const UserInfo: React.FC<Props> = (props) => {
+const UserInfo: React.FC<Props> = (props: Props) => {
   const { followee, followers, totalBadge, totalPoint, userId } = props;
   const classes = useStyles();
   return (

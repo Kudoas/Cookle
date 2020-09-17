@@ -1,4 +1,4 @@
-const baseUrl = `http://localhost:5000`;
+const baseUrl = "http://localhost:5000";
 
 const toJson = async (res: Response) => {
   if (res.status === 404) {
@@ -10,10 +10,6 @@ const toJson = async (res: Response) => {
   if (res.status === 401) {
     throw new Error("Unauthorized");
   }
-  // no-cors: type opaque
-  // if (res.status === 0) {
-  //   return { result: [] }
-  // }
   const js = await res.json();
   if (res.ok) {
     return js;
@@ -245,7 +241,7 @@ export const getMyStatus = async (jwtToken: string) => {
   return await toJson(resp);
 };
 
-export const getOtherPage = async <T>(jwtToken: string, user_id: string) => {
+export const getOtherPage = async (jwtToken: string, user_id: string) => {
   const resp = await fetch(`${baseUrl}/${user_id}/mypage`, {
     method: "GET",
     headers: new Headers({
@@ -256,7 +252,7 @@ export const getOtherPage = async <T>(jwtToken: string, user_id: string) => {
   return await toJson(resp);
 };
 
-export const getOtherStatus = async <T>(jwtToken: string, user_id: string) => {
+export const getOtherStatus = async (jwtToken: string, user_id: string) => {
   const resp = await fetch(`${baseUrl}/${user_id}/badge-status`, {
     method: "GET",
     headers: new Headers({
