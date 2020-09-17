@@ -21,7 +21,7 @@ import OtherUserFollower from "./pages/OtherUserFollower";
 
 import "./css/index.css";
 
-const App: React.FC = (props) => {
+const App: React.FC = () => {
   return (
     <>
       <Router>

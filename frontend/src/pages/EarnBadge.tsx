@@ -11,7 +11,7 @@ interface BadgeType {
   badge_level: number;
 }
 
-const BadgeComponent: React.FC<BadgeType | undefined> = (props) => {
+const BadgeComponent: React.FC<BadgeType | undefined> = (props: BadgeType) => {
   return (
     <Card style={{ height: 250, width: 200 }}>
       <CardContent>
@@ -31,7 +31,7 @@ interface Props {
   earnedBadges: BadgeType[] | undefined;
 }
 
-const EarnBadge: React.FC<Props> = (props) => {
+const EarnBadge: React.FC<Props> = (props: Props) => {
   const createBadges = () =>
     props.earnedBadges
       ? props.earnedBadges.map((item, index) => (

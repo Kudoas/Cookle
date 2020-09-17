@@ -19,7 +19,28 @@
     "@typescript-eslint/no-unnecessary-type-assertion": "error",
     "semi": "error",
     "quotes": ["error", "double"],
-    "indent": ["error", 2]
+    "MemberExpression": "off"
+    // "indent": [
+    //   "error",
+    //   2,
+    //   {
+    //     "ignoredNodes": [
+    //       "JSXElement",
+    //       "JSXElement > *",
+    //       "JSXAttribute",
+    //       "JSXIdentifier",
+    //       "JSXNamespacedName",
+    //       "JSXMemberExpression",
+    //       "JSXSpreadAttribute",
+    //       "JSXExpressionContainer",
+    //       "JSXOpeningElement",
+    //       "JSXClosingElement",
+    //       "JSXText",
+    //       "JSXEmptyExpression",
+    //       "JSXSpreadChild"
+    //     ]
+    //   }
+    // ]
   },
   "env": {
     "browser": true,
