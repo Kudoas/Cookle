@@ -6,7 +6,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 interface Props {
   option: OptionType[];
@@ -19,7 +19,7 @@ interface OptionType {
 }
 
 const Search: React.FC<Props> = (props: Props) => {
-  const [value, setValue] = React.useState<OptionType | null>(null);
+  // const [value, setValue] = React.useState<OptionType | null>(null);
   const [open, toggleOpen] = React.useState(false);
 
   const handleClose = () => {
@@ -44,7 +44,7 @@ const Search: React.FC<Props> = (props: Props) => {
   return (
     <React.Fragment>
       <Autocomplete
-        value={value}
+        value=""
         onChange={(event, newValue) => {
           if (typeof newValue === "string") {
             // timeout to avoid instant validation of the dialog's form.
