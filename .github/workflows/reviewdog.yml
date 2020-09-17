@@ -11,10 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: eslint
+
+      - name: yarn install
+        run: yarn install
+
+      - name: eslint-review
         uses: reviewdog/action-eslint@v1
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           workdir: ./frontend
           eslint_flags: "src/**/{*.ts,*.tsx}"
+
+      - name: eslint
+        run: yarn lint
