@@ -19,7 +19,7 @@ interface Props {
   badgeList: BadgeRank[];
 }
 
-const BadgeRankerList: React.FC<Props> = (props) => {
+const BadgeRankerList: React.FC<Props> = (props: Props) => {
   const List = props.badgeList.map((data) => {
     return (
       <BadgeRanker

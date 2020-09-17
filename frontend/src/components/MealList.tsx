@@ -10,7 +10,7 @@ interface Props {
   count: number;
 }
 
-const MealList: React.FC<Props> = (props) => {
+const MealList: React.FC<Props> = (props: Props) => {
   const { meal_id, meal_name, count } = props;
 
   return (

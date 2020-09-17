@@ -21,7 +21,6 @@ interface Post {
 
 const Timeline: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>();
-  const [mealName, setMealName] = useState([{ meal_name: "" }]);
   const [bonus, setBonus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   useLoginRedirect();
@@ -40,7 +39,6 @@ const Timeline: React.FC = () => {
         });
       await getMealName()
         .then((res) => {
-          setMealName(res.results);
           setBonus(res.bonus);
         })
         .catch((err) => {

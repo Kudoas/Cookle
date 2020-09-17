@@ -16,7 +16,7 @@ interface Props {
   medalList: MedalItem[];
 }
 
-const MedalStatus: React.FC<Props> = (props) => {
+const MedalStatus: React.FC<Props> = (props: Props) => {
   const createMedal = (level: number) => {
     let images = [];
     for (let i = 0; i < level; i++) {

@@ -6,7 +6,6 @@ import AssessmentIcon from "@material-ui/icons/Assessment";
 import PersonIcon from "@material-ui/icons/Person";
 import HomeIcon from "@material-ui/icons/Home";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
-import LensIcon from "@material-ui/icons/Lens";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";

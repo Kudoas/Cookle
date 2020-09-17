@@ -1,7 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -11,7 +10,7 @@ interface User {
   name: string;
 }
 
-const CreateList: React.FC<User> = (props) => {
+const CreateList: React.FC<User> = (props: User) => {
   const { user_id, name } = props;
   const history = useHistory();
 
@@ -31,7 +30,7 @@ interface Props {
   users: User[];
 }
 
-const UserList: React.FC<Props> = (props) => {
+const UserList: React.FC<Props> = (props: Props) => {
   const List = props.users.map((data) => {
     return <CreateList key={data.user_id} user_id={data.user_id} name={data.name} />;
   });

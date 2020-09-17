@@ -18,7 +18,7 @@ interface Props {
   mealLists: List[];
 }
 
-const MealLists: React.FC<Props> = (props) => {
+const MealLists: React.FC<Props> = (props: Props) => {
   const List = props.mealLists.map((data) => {
     return (
       <MealList
