@@ -16,4 +16,4 @@ jobs:
         with:
           reporter: github-pr-review
           workdir: ./frontend
-          eslint_flags: "'src/**/{*.ts,*.tsx}'"
+          eslint_flags: "src/**/{*.ts,*.tsx}"
